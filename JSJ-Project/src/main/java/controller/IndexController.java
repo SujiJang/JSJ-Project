@@ -21,25 +21,40 @@ public class IndexController {
 		this.service = service;
 	}
 
+	//메인페이지
 	@RequestMapping("/index.do")
 	public String process() {
 		return "index";
 	}
 	
+	//로그인페이지
 	@RequestMapping("/login.do")
 	public String loginprocess() {
 		return "login";
 	}
 	
+	//회원가입 페이지
 	@RequestMapping("/join.do")
 	public String joinprocess() {
 		return "join";
 	}
 	
+	//로그인버튼 눌렀을 때
+	@RequestMapping(value="/confirm.do", method=RequestMethod.POST)
+	public String confirmprocess(@RequestParam String returnUrl) {
+		String gogo="";
+		System.out.println("여기"+returnUrl);
+		if(returnUrl.equals("join.do")) {
+			return "redirect:"+"/"+returnUrl;
+		}
+		return "redirect:"+"/"+returnUrl;
+	}
+	
+	//회원가입 완료 버튼을 눌렀을 때
 	@RequestMapping(value="/register.do", method=RequestMethod.POST)
 	public String registerprocess(MembersDTO dto) { //, @RequestParam("url") String url
 		service.registerProcess(dto);
-		return "redirect:"+"/login.do";
+		return "redirect:"+"/index.do";
 	}
 
 }

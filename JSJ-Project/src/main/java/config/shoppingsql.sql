@@ -9,4 +9,9 @@ create table members(
 
 create sequence members_seq start with 1 increment by 1;
 
+
+insert into members(m_num, email, password, name) values(members_seq.nextval, 'aaa@naver.com', '1111', '홍' );
+insert into members(m_num, email, password, name) values(members_seq.nextval, 'bbb@naver.com', '1111', '홍길' );
+insert into members(m_num, email, password, name) values(members_seq.nextval, 'ccc@naver.com', '1111', '홍길동' );
+
 select * from members;

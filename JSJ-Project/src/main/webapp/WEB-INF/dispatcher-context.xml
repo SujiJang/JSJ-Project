@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- [1] DataSource 빈 선언 -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver"></property>
+		<property name="url" value="jdbc:oracle:thin://@127.0.0.1:1521:xe"></property>
+		<property name="username" value="hr"></property>
+		<property name="password" value="a1234"></property>
+	</bean>
+	
+<!-- [2] SqlSessionFactoryBean 빈 선언 -->
+	<bean id ="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<!-- configration에서 단순히 mapper만 적용시킬 때 -->
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:config/shoppingMapper.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+<!-- [3] SqlSessionTemplate 빈 선언 -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory"/>
+	</bean>
+	
+<!-- [7] DAO 빈선언 -->
+<!-- [4] BoardDaoImp 빈 선언 -->
+	<bean id="dao" class="dao.ShoppingDaoImp">
+		<property name="sqlSession" ref="sqlSession"/>
+	</bean>
+	
+<!-- [5] BoardDaoServiceImp 빈 선언-->
+	<bean id="service" class="service.ShoppingServiceImp">
+		<property name="dao" ref="dao"/>
+	</bean>
+
+<!-- Controller 선언-->
+	<bean id="join_login" class="controller.IndexController">
+		<property name="service" ref="service"/>
+	</bean>
+	
+<!-- tiles -->
+	<bean class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+<!-- view -->
+	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>
+		<property name="order" value="1"/>
+	</bean>
+	
+<!-- view에서 internalresourceviewresolver를 가장 마지막에 설정해주어야함 -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/view/"/>
+		<property name="suffix" value=".jsp"/>
+		<property name="order" value="2"/>
+	</bean>
+</beans>

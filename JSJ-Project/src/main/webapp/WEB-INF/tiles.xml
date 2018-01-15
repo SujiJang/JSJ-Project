@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+<!-- 	<definition name="index" template="/WEB-INF/view/template/layout.jsp">
+		<put-attribute name="title" value="Spring Tiles Example"/>
+		<put-attribute name="header" value="/WEB-INF/view/template/header.jsp"/>
+		<put-attribute name="menu" value="/WEB-INF/view/template/menu.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/view/body.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/view/template/footer.jsp"/>
+	</definition> -->
+	
+	<definition name="index" template="/WEB-INF/view/template/layout.jsp">
+		<put-attribute name="title" value="Spring Tiles Example"/>
+		<put-attribute name="header" value="/WEB-INF/view/template/header.jsp"/>
+		<!-- <put-attribute name="menu" value="/WEB-INF/view/template/menu.jsp"/> -->
+		<put-attribute name="body" value="/WEB-INF/view/body.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/view/template/footer.jsp"/>
+	</definition>
+	
+	<!-- extends를 이용하면 index를 상속받아 index의 자원은 사용할 수 있음 따라서 변경부분만 변경되고 나머지는 그대로 이용되는 것 -->
+	<definition name="login" extends="index">
+	<put-attribute name="title" value="Login"/>
+		<put-attribute name="body" value="/WEB-INF/view/body-login.jsp"/>
+	</definition>
+	
+	<definition name="join" extends="index">
+	<put-attribute name="title" value="Join"/>
+		<put-attribute name="body" value="/WEB-INF/view/body-join.jsp"/>
+	</definition>
+	
+	<definition name="menu2" extends="index">
+		<put-attribute name="title" value="Menu2 Tiles Example"/>
+		<put-attribute name="body" value="/WEB-INF/view/body-menu2.jsp"/>
+	</definition>
+	
+</tiles-definitions>

@@ -20,4 +20,14 @@ public class ShoppingServiceImp implements ShoppingService {
 		dao.register(dto);
 	}
 
+	@Override
+	public int selectidProcess(MembersDTO dto) {
+		return dao.selectid(dto);
+	}
+
+	@Override
+	public int selectpassProcess(MembersDTO dto) {
+		return dao.selectpass(dto);
+	}
+
 }

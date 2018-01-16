@@ -41,13 +41,21 @@ public class IndexController {
 	
 	//로그인버튼 눌렀을 때
 	@RequestMapping(value="/confirm.do", method=RequestMethod.POST)
-	public String confirmprocess(@RequestParam String returnUrl) {
-		String gogo="";
-		System.out.println("여기"+returnUrl);
-		if(returnUrl.equals("join.do")) {
-			return "redirect:"+"/"+returnUrl;
+	public String confirmprocess(@RequestParam String returnUrl, MembersDTO dto) {
+		if(service.selectidProcess(dto)==0) {
+			return "noneid";
+		} else {
+			if(service.selectpassProcess(dto)==0) {
+				return "nonepassword";
+			} else {
+				if(returnUrl.equals("join.do")) {
+					return "redirect:"+"/index.do";
+				} else {
+					return "redirect:"+"/"+returnUrl;
+				}
+			}
 		}
-		return "redirect:"+"/"+returnUrl;
+		
 	}
 	
 	//회원가입 완료 버튼을 눌렀을 때

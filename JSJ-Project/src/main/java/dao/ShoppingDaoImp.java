@@ -18,9 +18,20 @@ public class ShoppingDaoImp implements ShoppingDAO {
 
 	@Override
 	public void register(MembersDTO dto) {
-		sqlSession.insert("join.register", dto);
+		sqlSession.insert("shopping.register", dto);
 		
 	}
+
+	@Override
+	public int selectid(MembersDTO dto) {
+		return sqlSession.selectOne("shopping.selectid", dto);
+	}
+
+	@Override
+	public int selectpass(MembersDTO dto) {
+		return sqlSession.selectOne("shopping.selectpass", dto);
+	}
+	
 	
 	
 	

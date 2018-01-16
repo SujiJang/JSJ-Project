@@ -3,10 +3,17 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
-<mapper namespace="join">
-	
+<mapper namespace="shopping">
 	<insert id="register" parameterType="dto.MembersDTO">
 		insert into members(m_num, email, password, name) values(members_seq.nextval, #{email}, #{password}, #{name})
 	</insert>
 	
+	<select id="selectid" parameterType="dto.MembersDTO" resultType="int">
+		select count(email) from members where email = #{email}
+	</select>
+	
+	<select id="selectpass" parameterType="dto.MembersDTO" resultType="int">
+		select count(*) from members where email = #{email} and password = #{password}
+	</select>
 </mapper>
+

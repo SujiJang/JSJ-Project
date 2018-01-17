@@ -1,11 +1,17 @@
 package dto;
 
+import java.util.Date;
+
 public class MembersDTO {
 	
 	private int m_num;
-	private String email;
-	private String password;
-	private String name;
+	private String m_id;
+	private String m_password;
+	private String m_name;
+	private String m_birth;
+	private String m_gen;
+	private Date m_date;
+	private int m_point;
 	
 	public MembersDTO() {
 		
@@ -19,29 +25,62 @@ public class MembersDTO {
 		this.m_num = m_num;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getM_id() {
+		return m_id;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setM_id(String m_id) {
+		this.m_id = m_id;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getM_password() {
+		return m_password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setM_password(String m_password) {
+		this.m_password = m_password;
 	}
 
-	public String getName() {
-		return name;
+	public String getM_name() {
+		return m_name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setM_name(String m_name) {
+		this.m_name = m_name;
 	}
+
+	public String getM_birth() {
+		return m_birth;
+	}
+
+	public void setM_birth(String m_birth) {
+		this.m_birth = m_birth;
+	}
+
+	public String getM_gen() {
+		return m_gen;
+	}
+
+	public void setM_gen(String m_gen) {
+		this.m_gen = m_gen;
+	}
+
+	public Date getM_date() {
+		return m_date;
+	}
+
+	public void setM_date(Date m_date) {
+		this.m_date = m_date;
+	}
+
+	public int getM_point() {
+		return m_point;
+	}
+
+	public void setM_point(int m_point) {
+		this.m_point = m_point;
+	}
+
 	
 	
 

@@ -7,6 +7,7 @@ public class MembersDTO {
 	private int m_num;
 	private String m_id;
 	private String m_password;
+	private String m_phonenum;
 	private String m_name;
 	private String m_birth;
 	private String m_gen;
@@ -16,6 +17,20 @@ public class MembersDTO {
 	public MembersDTO() {
 		
 	}
+	
+	
+
+	public String getM_phonenum() {
+		return m_phonenum;
+	}
+
+
+
+	public void setM_phonenum(String m_phonenum) {
+		this.m_phonenum = m_phonenum;
+	}
+
+
 
 	public int getM_num() {
 		return m_num;

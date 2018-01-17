@@ -12,7 +12,7 @@ create sequence members_seq start with 1 increment by 1;
 
 insert into members(m_num, email, password, name) values(members_seq.nextval, 'aaa@naver.com', '1111', '홍' );
 insert into members(m_num, email, password, name) values(members_seq.nextval, 'bbb@naver.com', '1111', '홍길' );
-insert into members(m_num, email, password, name) values(members_seq.nextval, 'ccc@naver.com', '1111', '홍길동' );
+insert into members values('bbb', '1111', '홍길동', '010', '2018-09-02', 'w',sysdate, 2000);
 
 select * from members;
 
@@ -22,11 +22,13 @@ create table members(
    	m_password varchar2(50) not null,
    	m_name varchar2(50) not null,
    	m_phonenum varchar2(30) not null,
-   	m_birth varchar2(30) not null,
+   	m_birth varchar2(20) not null,
    	m_gen varchar2(10) not null,
    	m_date date not null,
    	m_point number(30)
 );
+
+
 
 create sequence members_seq start with 1 increment by 1;
 
@@ -77,7 +79,7 @@ create table products(
 create sequence products_seq start with 1 increment by 1;
 
 -------------------------------------------------------------------------------------------------------
-
+drop table orders;
 create table orders(
 	o_num number(10) constraint orders_num_pk primary key,
 	order_code varchar2(100) not null,
@@ -101,6 +103,7 @@ create table orders(
 create sequence orders_seq start with 1 increment by 1;
 
 ------------------------------------------------------------------------------------------
+drop table basket;
 create table basket(
 	b_num number(10) constraint basket_num_pk primary key,
 	m_id varchar2(20) not null,
@@ -115,7 +118,7 @@ create table basket(
 create sequence basket_seq start with 1 increment by 1;
 
 ----------------------------------------------------------------------------------------
-
+drop table mine;
 create table mine(
 	mi_num number(10) constraint mine_num_pk primary key,
 	m_id varchar2(20) not null,
@@ -131,7 +134,7 @@ create sequence mine_seq start with 1 increment by 1;
 
 
 ----------------------------------------------------------------------------
-
+drop table delivery;
 create table delivery(
 	de_num number(10) constraint delivery_num_pk primary key,
 	order_code varchar2(50) not null,

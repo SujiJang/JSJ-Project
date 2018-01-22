@@ -12,11 +12,14 @@ create sequence members_seq start with 1 increment by 1;
 
 insert into members(m_num, email, password, name) values(members_seq.nextval, 'aaa@naver.com', '1111', '홍' );
 insert into members(m_num, email, password, name) values(members_seq.nextval, 'bbb@naver.com', '1111', '홍길' );
-insert into members values('bbb', '1111', '홍길동', '010', '2018-09-02', 'w',sysdate, 2000);
+insert into members values('bbb', '1111', '홍길동', '010', '201  8-09-02', 'w',sysdate, 2000);
 
 select * from members;
 
 --------------------------------------------------------------------------------------
+drop table members;
+drop sequence members_seq;
+
 create table members(
    	m_id varchar2(50) constraint members_m_id_pk primary key,
    	m_password varchar2(50) not null,
@@ -25,31 +28,63 @@ create table members(
    	m_birth varchar2(20) not null,
    	m_gen varchar2(10) not null,
    	m_date date not null,
-   	m_point number(30)
+   	m_point number(30),
+   	m_zipcode varchar2(30),
+   	m_address varchar2(30),
+   	m_otherphone varchar2(30)
 );
-
-
 
 create sequence members_seq start with 1 increment by 1;
 
+
+--------------------------------------------------------------------------------------
+drop table main_category;
+drop sequence main_category;
+
+create table main_category(
+	mc_num number(10) constraint main_category_num_pk primary key,
+	mc_name varchar2(50) not null
+);
+
+
+create sequence main_category_seq start with 1 increment by 1;
+
 ---------------------------------------------------------------------------------------
+drop table sub_category;
+drop sequence sub_category_seq;
+
+create table sub_category(
+	sub_num number(10) constraint sub_category_num_pk primary key,
+	mc_num number(10) not null,
+	sub_name varchar2(50), 
+	constraint sub_category_mc_num_fk foreign key(mc_num) references main_category(mc_num)
+);
+
+create sequence sub_category_seq start with 1 increment by 1;
+
+---------------------------------------------------------------------------------------
+drop table mainproducts;
+drop sequence mainproducts_seq;
 
 create table mainproducts(
 	mp_num number(20) constraint mainproducts_num_pk primary key,
+	sub_num number(20) not null,
  	mp_name varchar2(50) not null,
- 	mp_main_category varchar2(50) not null,
- 	mp_sub_category varchar2(50) not null,
  	mp_price number(30) not null,
  	mp_discount_rate number(10) not null,
  	mp_date date not null,
  	mp_main_image varchar2(50) not null,
- 	mp_detail varchar2(50)
+ 	mp_detail varchar2(50),
+ 	mp_ordered_amount number(10) default 0,
+ 	constraint mainproducts_sub_num_fk foreign key(sub_num) references sub_category(sub_num)
 );
 
 create sequence mainproducts_seq start with 1 increment by 1;
 
-------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 drop table sumnail;
+drop sequence sumnail_seq;
+
 create table sumnail(
 	sum_num number(30) constraint sumnail_num_pk primary key,
 	mp_num number(20) not null,
@@ -63,8 +98,11 @@ create table sumnail(
 
 create sequence sumnail_seq start with 1 increment by 1;
 
-drop table products;
+
 -------------------------------------------------------------------------------------------------------
+drop table products;
+drop sequence products_seq;
+
 create table products(
 	p_num number(10) constraint products_num_pk primary key,
 	mp_num number(10) not null,
@@ -80,30 +118,47 @@ create sequence products_seq start with 1 increment by 1;
 
 -------------------------------------------------------------------------------------------------------
 drop table orders;
+drop sequence orders_seq;
+
 create table orders(
 	o_num number(10) constraint orders_num_pk primary key,
-	order_code varchar2(100) not null,
-	mp_num number(10) not null,
-	m_id varchar2(20) not null,
-	o_inform varchar2(100) not null,
-	o_price number(20) not null,
-	o_amount number(20) not null,
+	m_id varchar2(20) not null, --fk
+	o_total_price number(20),
 	o_date date not null,
-	o_zipcode varchar2(10) not null,
-	o_address varchar2(100) not null,
+	o_zipcode varchar2(10),
+	o_address varchar2(100),
 	o_phone varchar2(50),
 	o_payment varchar2(50),
 	o_paycheck varchar2(10) default 'F',
 	o_etc varchar2(50),
 	o_message varchar2(100),
-	constraint orders_mp_num_fk foreign key(mp_num) references mainproducts(mp_num),
 	constraint orders_m_id_fk foreign key(m_id) references members(m_id)
 );
 
 create sequence orders_seq start with 1 increment by 1;
 
+	order_code varchar2(100) not null,
+-----------------------------------------------------------------------------------------
+drop table orderlist;
+drop sequence orderlist_seq;
+
+create table orderlist(
+	ol_num number(10) constraint orderlist_num_pk primary key,
+	mp_num number(10) not null, 
+	o_num number(10) not null,
+	o_inform varchar2(200) not null,
+	o_price number(20) not null,
+	o_amount number(20) not null,
+	constraint orderlist_mp_num_fk foreign key(mp_num) references mainproducts(mp_num),
+	constraint orderlist_o_num_fk foreign key(o_num) references orders(o_num)
+);
+
+create sequence orderlist_seq start with 1 increment by 1;
+
 ------------------------------------------------------------------------------------------
 drop table basket;
+drop sequence basket_seq;
+
 create table basket(
 	b_num number(10) constraint basket_num_pk primary key,
 	m_id varchar2(20) not null,
@@ -119,6 +174,8 @@ create sequence basket_seq start with 1 increment by 1;
 
 ----------------------------------------------------------------------------------------
 drop table mine;
+drop sequence mine_seq;
+
 create table mine(
 	mi_num number(10) constraint mine_num_pk primary key,
 	m_id varchar2(20) not null,
@@ -132,20 +189,21 @@ create table mine(
 
 create sequence mine_seq start with 1 increment by 1;
 
-
 ----------------------------------------------------------------------------
 drop table delivery;
+drop sequence delivery_seq;
+
 create table delivery(
 	de_num number(10) constraint delivery_num_pk primary key,
-	order_code varchar2(50) not null,
+	o_num number(10) not null,
 	m_id varchar2(20) not null,
 	de_price number(30),
 	de_date date,
-	constraint delivery_m_id_fk foreign key(m_id) references members(m_id)
-
+	constraint delivery_m_id_fk foreign key(m_id) references members(m_id),
+	constraint delivery_o_num_fk foreign key(o_num) references orders(o_num)
 );
 
 create sequence delivery_seq start with 1 increment by 1;
 
 =================================================================================
-	constraint delivery_order_code_fk foreign key(order_code) references orders(order_code)
+	

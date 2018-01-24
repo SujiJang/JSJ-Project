@@ -15,29 +15,36 @@ String url=request.getURI(); */
 /* System.out.println(url); */
 %> --%>
 <div>
-	<a href="login.do">로그인</a>
-	<a href="join.do">회원가입</a>
+	<a href="/myshopping/index.do">홈</a>
+	<a href="/myshopping/login.do">로그인</a>
+	<a href="/myshopping/join.do">회원가입</a>
 </div>
 <div></div>
-<div>
+<div id="menu">
 	<ul>
 		<li>
-			<div>상의</div>
+			<div>TOP</div>
 			<div>
 				<ul>
-					<li>아우터</li>
-					<li>티셔츠</li>
+					<li><a href="/myshopping/items/list.do?num=1">OUTER</a></li>
+					<li><a href="/myshopping/items/list.do?num=2">TSHIRTS</a></li>
 				</ul>
 			</div>
 		</li>
 		<li>
-			<div>하의</div>
+			<div>BOTTOM</div>
 			<div>
 				<ul>
-					<li>청바지</li>
+					<li><a href="/myshopping/items/list.do?num=3">JEAN</a></li>
 				</ul>
 			</div>
 		</li>
 	</ul>
+	<div>
+		<form>
+			<input type="text" id="search" name="search" accessKey="F" placeholder="검색하기"/>
+			<a class="btn btn-small" href="#"><i class="fa fa-search" aria-hidden="true"></i></a>
+		</form>
+	</div>
 </div>
 <!-- <h2 align="center">Spring Tiles Examples!!!</h2> -->

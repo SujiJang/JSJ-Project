@@ -17,8 +17,6 @@ public class MembersDTO {
 	public MembersDTO() {
 		
 	}
-	
-	
 
 	public String getM_phonenum() {
 		return m_phonenum;

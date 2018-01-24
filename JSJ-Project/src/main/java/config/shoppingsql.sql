@@ -49,6 +49,10 @@ create table main_category(
 
 create sequence main_category_seq start with 1 increment by 1;
 
+insert into main_category values(main_category_seq.nextval, 'TOP');
+insert into main_category values(main_category_seq.nextval, 'BOTTOM');
+
+select * from MAIN_CATEGORY;
 ---------------------------------------------------------------------------------------
 drop table sub_category;
 drop sequence sub_category_seq;
@@ -60,9 +64,16 @@ create table sub_category(
 	constraint sub_category_mc_num_fk foreign key(mc_num) references main_category(mc_num)
 );
 
+select * from sub_category;
 create sequence sub_category_seq start with 1 increment by 1;
 
----------------------------------------------------------------------------------------
+insert into sub_category values(sub_category_seq.nextval, 1, 'OUTER');
+insert into sub_category values(sub_category_seq.nextval, 1, 'TSHIRTS');
+insert into sub_category values(sub_category_seq.nextval, 2, 'JEAN');
+delete from sub_category where sub_num=4;
+update sub_category set sub_name='JEAN', mc_num=2 where sub_num=3;
+
+--------------------------------------------------------------------------------------
 drop table mainproducts;
 drop sequence mainproducts_seq;
 
@@ -74,12 +85,30 @@ create table mainproducts(
  	mp_discount_rate number(10) not null,
  	mp_date date not null,
  	mp_main_image varchar2(50) not null,
- 	mp_detail varchar2(50),
+ 	mp_detail varchar2(500),
  	mp_ordered_amount number(10) default 0,
  	constraint mainproducts_sub_num_fk foreign key(sub_num) references sub_category(sub_num)
 );
 
+
 create sequence mainproducts_seq start with 1 increment by 1;
+
+insert into mainproducts values(mainproducts_seq.nextval, 1, '베이직 테일러드 자켓', 65000, 0, sysdate, 'outer/grayouter.jpg', '', 100 );
+insert into mainproducts values(mainproducts_seq.nextval, 2, '베이직 옐로우 티셔츠', 23000, 0, sysdate, 'tshirts/yellowshirts.jpg', '', 100 );
+insert into mainproducts values(mainproducts_seq.nextval, 3, '연하늘 스키니 진', 32000, 0, sysdate, 'jean/skinnyjean.jpg', '', 100 );
+
+insert into mainproducts values(mainproducts_seq.nextval, 2, '베이직 겨자색 티셔츠', 23000, 0, sysdate, 'tshirts/yellowshirts.jpg', '', 100 );
+
+update mainproducts set mp_main_image='outer/grayouter.jpg' where mp_price=65000;
+
+update mainproducts set mp_ordered_amount=200 where mp_num=5;
+update mainproducts set mp_name='인기예로우102' where mp_num=7;
+update mainproducts set mp_ordered_amount=202 where mp_num=7;
+
+select * from mainproducts;
+
+alter table mainproducts modify(mp_detail varchar2(1000));
+
 
 --------------------------------------------------------------------------------
 drop table sumnail;
@@ -115,6 +144,15 @@ create table products(
 );
 
 create sequence products_seq start with 1 increment by 1;
+
+insert into products values(products_seq.nextval, 1, 'gray', 'L', sysdate, 100, 0);
+insert into products values(products_seq.nextval, 1, 'gray', 'M', sysdate, 100, 0);
+insert into products values(products_seq.nextval, 1, 'gray', 'S', sysdate, 100, 0);
+insert into products values(products_seq.nextval, 1, 'navy', 'L', sysdate, 100, 0);
+insert into products values(products_seq.nextval, 1, 'navy', 'M', sysdate, 100, 0);
+insert into products values(products_seq.nextval, 1, 'navy', 'S', sysdate, 100, 0);
+
+
 
 -------------------------------------------------------------------------------------------------------
 drop table orders;
@@ -207,3 +245,10 @@ create sequence delivery_seq start with 1 increment by 1;
 
 =================================================================================
 	
+
+ select b.* from(
+           select rownum as rm, a.*  from(
+           select * from mainproducts where sub_num=2 order by mp_ordered_amount desc)a)b
+           where b.rm>=1 and b.rm<=2
+
+           

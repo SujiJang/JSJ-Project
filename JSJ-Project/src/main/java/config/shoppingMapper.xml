@@ -4,6 +4,25 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="shopping">
+
+	<resultMap type="dto.Main_CategoryDTO" id="aaa" autoMapping="false" >
+		<result column="mc_num" property="mc_num" />
+		<result column="mc_name" property="mc_name" />
+		<collection property="subList" javaType="java.util.List" ofType="dto.Sub_CategoryDTO"  autoMapping="false" >
+			<id column="sub_num" property="sub_num" />
+			<result column="mc_num" property="mc_num" />
+			<result column="sub_name" property="sub_name" />
+		</collection>
+	</resultMap>
+	
+	<select id="showindex" parameterType="int" resultMap="aaa">
+		select * from main_category m, sub_category s where m.mc_num=s.mc_num and s.sub_num=#{num}
+	</select>
+
+	<select id="count" parameterType="int" resultType="int">
+		select count(*) from mainproducts where sub_num=#{num}
+	</select>
+	
 	<insert id="register" parameterType="dto.MembersDTO">
 		insert into members values(#{m_id}, #{m_password}, #{m_name}, #{m_phonenum}, #{m_birth}, #{m_gen}, sysdate, 10000)
 	</insert>
@@ -15,5 +34,42 @@
 	<select id="selectpass" parameterType="dto.MembersDTO" resultType="int">
 		select count(*) from members where email = #{email} and password = #{password}
 	</select>
+	
+	<select id="listitems_1" parameterType="map" resultType="dto.MainproductsDTO">
+		<![CDATA[
+          select b.* from(
+          select rownum as rm, a.*  from(
+          select * from mainproducts where sub_num=#{num} order by mp_date desc)a)b
+          where b.rm>=#{startRow} and b.rm<=#{endRow}
+    	]]>
+	</select>
+	
+		<select id="listitems_2" parameterType="map" resultType="dto.MainproductsDTO">
+		<![CDATA[
+          select b.* from(
+          select rownum as rm, a.*  from(
+          select * from mainproducts where sub_num=#{num} order by mp_ordered_amount desc)a)b
+          where b.rm>=#{startRow} and b.rm<=#{endRow}
+    	]]>
+	</select>
+	
+		<select id="listitems_3" parameterType="map" resultType="dto.MainproductsDTO">
+		<![CDATA[
+          select b.* from(
+          select rownum as rm, a.*  from(
+          select * from mainproducts where sub_num=#{num} order by mp_price asc)a)b
+          where b.rm>=#{startRow} and b.rm<=#{endRow}
+    	]]>
+	</select>
+	
+		<select id="listitems_4" parameterType="map" resultType="dto.MainproductsDTO">
+		<![CDATA[
+          select b.* from(
+          select rownum as rm, a.*  from(
+          select * from mainproducts where sub_num=#{num} order by mp_price desc)a)b
+          where b.rm>=#{startRow} and b.rm<=#{endRow}
+    	]]>
+	</select>
+	
 </mapper>
 

@@ -16,10 +16,16 @@ header {
 	
 }
 
+menu {
+	height: 670px;
+	background-color: teal;
+	width: 20%;
+	float: left;
+}
 
 section {
 	background-color: skyblue;
-	width: 100%;
+	width: 80%;
 	height: 670px;
 	float: right;
 }
